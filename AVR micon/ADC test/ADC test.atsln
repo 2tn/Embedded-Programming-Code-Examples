@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ADC test", "ADC test\ADC test.cproj", "{58E47A87-A7C4-45FE-A8EB-9EE0DDE9606B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58E47A87-A7C4-45FE-A8EB-9EE0DDE9606B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{58E47A87-A7C4-45FE-A8EB-9EE0DDE9606B}.Debug|AVR.Build.0 = Debug|AVR
+		{58E47A87-A7C4-45FE-A8EB-9EE0DDE9606B}.Release|AVR.ActiveCfg = Release|AVR
+		{58E47A87-A7C4-45FE-A8EB-9EE0DDE9606B}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

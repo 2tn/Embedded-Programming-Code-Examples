@@ -1,0 +1,226 @@
+
+SPItest.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000c6  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000001  00800060  00800060  0000013a  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  0000013a  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000038  00000000  00000000  0000016a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   000001bd  00000000  00000000  000001a2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000015b  00000000  00000000  0000035f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   0000017e  00000000  00000000  000004ba  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000064  00000000  00000000  00000638  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000001bb  00000000  00000000  0000069c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000069  00000000  00000000  00000857  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000028  00000000  00000000  000008c0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	1f c0       	rjmp	.+62     	; 0x42 <__bad_interrupt>
+   4:	1e c0       	rjmp	.+60     	; 0x42 <__bad_interrupt>
+   6:	1d c0       	rjmp	.+58     	; 0x42 <__bad_interrupt>
+   8:	1c c0       	rjmp	.+56     	; 0x42 <__bad_interrupt>
+   a:	1b c0       	rjmp	.+54     	; 0x42 <__bad_interrupt>
+   c:	1a c0       	rjmp	.+52     	; 0x42 <__bad_interrupt>
+   e:	19 c0       	rjmp	.+50     	; 0x42 <__bad_interrupt>
+  10:	18 c0       	rjmp	.+48     	; 0x42 <__bad_interrupt>
+  12:	17 c0       	rjmp	.+46     	; 0x42 <__bad_interrupt>
+  14:	16 c0       	rjmp	.+44     	; 0x42 <__bad_interrupt>
+  16:	16 c0       	rjmp	.+44     	; 0x44 <__vector_11>
+  18:	14 c0       	rjmp	.+40     	; 0x42 <__bad_interrupt>
+  1a:	13 c0       	rjmp	.+38     	; 0x42 <__bad_interrupt>
+  1c:	12 c0       	rjmp	.+36     	; 0x42 <__bad_interrupt>
+  1e:	11 c0       	rjmp	.+34     	; 0x42 <__bad_interrupt>
+  20:	10 c0       	rjmp	.+32     	; 0x42 <__bad_interrupt>
+  22:	0f c0       	rjmp	.+30     	; 0x42 <__bad_interrupt>
+  24:	0e c0       	rjmp	.+28     	; 0x42 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf ed       	ldi	r28, 0xDF	; 223
+  2c:	cd bf       	out	0x3d, r28	; 61
+
+0000002e <__do_clear_bss>:
+  2e:	20 e0       	ldi	r18, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	01 c0       	rjmp	.+2      	; 0x38 <.do_clear_bss_start>
+
+00000036 <.do_clear_bss_loop>:
+  36:	1d 92       	st	X+, r1
+
+00000038 <.do_clear_bss_start>:
+  38:	a1 36       	cpi	r26, 0x61	; 97
+  3a:	b2 07       	cpc	r27, r18
+  3c:	e1 f7       	brne	.-8      	; 0x36 <.do_clear_bss_loop>
+  3e:	24 d0       	rcall	.+72     	; 0x88 <main>
+  40:	40 c0       	rjmp	.+128    	; 0xc2 <_exit>
+
+00000042 <__bad_interrupt>:
+  42:	de cf       	rjmp	.-68     	; 0x0 <__vectors>
+
+00000044 <__vector_11>:
+
+
+volatile uint8_t triggered = 0;
+
+ISR(PCINT_vect)
+{
+  44:	1f 92       	push	r1
+  46:	0f 92       	push	r0
+  48:	0f b6       	in	r0, 0x3f	; 63
+  4a:	0f 92       	push	r0
+  4c:	11 24       	eor	r1, r1
+  4e:	8f 93       	push	r24
+	if (!bit_is_set(PINB, 4))
+  50:	b4 99       	sbic	0x16, 4	; 22
+  52:	03 c0       	rjmp	.+6      	; 0x5a <__vector_11+0x16>
+	{
+		triggered = 1;
+  54:	81 e0       	ldi	r24, 0x01	; 1
+  56:	80 93 60 00 	sts	0x0060, r24
+	}
+}
+  5a:	8f 91       	pop	r24
+  5c:	0f 90       	pop	r0
+  5e:	0f be       	out	0x3f, r0	; 63
+  60:	0f 90       	pop	r0
+  62:	1f 90       	pop	r1
+  64:	18 95       	reti
+
+00000066 <spi_slave_receive>:
+
+uint8_t	spi_slave_receive(uint8_t send)
+{
+	USIDR = send;
+  66:	8f b9       	out	0x0f, r24	; 15
+	USISR = (1<<USIOIF);
+  68:	80 e4       	ldi	r24, 0x40	; 64
+  6a:	8e b9       	out	0x0e, r24	; 14
+	while (!(USISR & (1<<USIOIF)));	
+  6c:	76 9b       	sbis	0x0e, 6	; 14
+  6e:	fe cf       	rjmp	.-4      	; 0x6c <spi_slave_receive+0x6>
+	uint8_t	receive = USIDR;
+  70:	8f b1       	in	r24, 0x0f	; 15
+
+	return	receive;
+}
+  72:	08 95       	ret
+
+00000074 <spi_slave_init>:
+
+void	spi_slave_init()
+{
+	USICR = (1<<USIWM0)|(1<<USICS1);
+  74:	88 e1       	ldi	r24, 0x18	; 24
+  76:	8d b9       	out	0x0d, r24	; 13
+
+	// MISO(PB6)は出力に
+	DDRB |= _BV(MISO);
+  78:	be 9a       	sbi	0x17, 6	; 23
+	// MOSI(PB5)/USCKは入力に
+	DDRB &= ~(_BV(MOSI) | _BV(USCK));
+  7a:	87 b3       	in	r24, 0x17	; 23
+  7c:	8f 75       	andi	r24, 0x5F	; 95
+  7e:	87 bb       	out	0x17, r24	; 23
+
+	// MOSI(PB5)/USCK(PB7)プルアップ
+	PORTB |= (_BV(MOSI) | _BV(USCK));
+  80:	88 b3       	in	r24, 0x18	; 24
+  82:	80 6a       	ori	r24, 0xA0	; 160
+  84:	88 bb       	out	0x18, r24	; 24
+  86:	08 95       	ret
+
+00000088 <main>:
+}
+
+int main(void)
+{
+	spi_slave_init();
+  88:	f5 df       	rcall	.-22     	; 0x74 <spi_slave_init>
+	DDRD = 0b00000001;
+  8a:	81 e0       	ldi	r24, 0x01	; 1
+  8c:	81 bb       	out	0x11, r24	; 17
+	
+	// PB4プルアップ
+	PORTB |= _BV(PB4);
+  8e:	c4 9a       	sbi	0x18, 4	; 24
+
+	// PB4の変化割込み
+	GIMSK |= _BV(PCIE);
+  90:	8b b7       	in	r24, 0x3b	; 59
+  92:	80 62       	ori	r24, 0x20	; 32
+  94:	8b bf       	out	0x3b, r24	; 59
+	PCMSK |= _BV(PB4);
+  96:	80 b5       	in	r24, 0x20	; 32
+  98:	80 61       	ori	r24, 0x10	; 16
+  9a:	80 bd       	out	0x20, r24	; 32
+
+	sei();
+  9c:	78 94       	sei
+		}
+		triggered = 0;
+		
+		spi_slave_receive(d);
+		
+		PORTD = 0b00000001;
+  9e:	c1 e0       	ldi	r28, 0x01	; 1
+	sei();
+
+	uint8_t d = 0x56;
+	for (;;)
+	{
+		while (!triggered)
+  a0:	80 91 60 00 	lds	r24, 0x0060
+  a4:	88 23       	and	r24, r24
+  a6:	e1 f3       	breq	.-8      	; 0xa0 <main+0x18>
+		{
+		}
+		triggered = 0;
+  a8:	10 92 60 00 	sts	0x0060, r1
+		
+		spi_slave_receive(d);
+  ac:	86 e5       	ldi	r24, 0x56	; 86
+  ae:	db df       	rcall	.-74     	; 0x66 <spi_slave_receive>
+		
+		PORTD = 0b00000001;
+  b0:	c2 bb       	out	0x12, r28	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  b2:	87 ea       	ldi	r24, 0xA7	; 167
+  b4:	91 e6       	ldi	r25, 0x61	; 97
+  b6:	01 97       	sbiw	r24, 0x01	; 1
+  b8:	f1 f7       	brne	.-4      	; 0xb6 <main+0x2e>
+  ba:	00 c0       	rjmp	.+0      	; 0xbc <main+0x34>
+  bc:	00 00       	nop
+		_delay_ms(100);
+		PORTD = 0b00000000;
+  be:	12 ba       	out	0x12, r1	; 18
+		
+	}
+  c0:	ef cf       	rjmp	.-34     	; 0xa0 <main+0x18>
+
+000000c2 <_exit>:
+  c2:	f8 94       	cli
+
+000000c4 <__stop_program>:
+  c4:	ff cf       	rjmp	.-2      	; 0xc4 <__stop_program>
