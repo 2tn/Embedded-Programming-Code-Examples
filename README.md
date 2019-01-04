@@ -1,2 +1,2 @@
-# Microcomputer_TestPrograms
-いままで使ってきたマイコンの基礎的なインタフェースのテストプログラムをまとめてみた
+# Embedded Programming Code Examples
+いままで使ってきたマイコンの基礎的なインタフェースのプログラムをまとめた
